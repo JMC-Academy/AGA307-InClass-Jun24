@@ -1601,6 +1601,8 @@ MonoBehaviour:
   - {fileID: 1908725078}
   enemies: []
   killCondition: 
+  spawnDelay: 1
+  spawnAmount: 6
 --- !u!4 &1594697290
 Transform:
   m_ObjectHideFlags: 0
@@ -1787,6 +1789,10 @@ PrefabInstance:
     - target: {fileID: 7535854526523041748, guid: 1c236994a7a8f4d4f95359f2f5c05744, type: 3}
       propertyPath: m_Name
       value: Laser
+      objectReference: {fileID: 0}
+    - target: {fileID: 7535854526523041748, guid: 1c236994a7a8f4d4f95359f2f5c05744, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
