@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : GameBehaviour
 {
     private CharacterController characterController;
     public float speed = 10f;
@@ -41,5 +41,8 @@ public class PlayerController : MonoBehaviour
 
         velocity.y += gravity * Time.deltaTime;
         characterController.Move(velocity * Time.deltaTime);
+
+        //Print the name of the closest enemy
+        print("Closest Enemy is " + GetClosestObject(transform, _EM.enemies));
     }
 }

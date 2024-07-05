@@ -10,7 +10,7 @@ public enum EnemyType
 }
 public enum PatrolType { Linear, Random, Loop }
 
-public class EnemyManager : MonoBehaviour
+public class EnemyManager : Singleton<EnemyManager>
 {
     public GameObject[] enemyPrefabs;
     public string[] playerNames;
@@ -90,7 +90,7 @@ public class EnemyManager : MonoBehaviour
     /// Kills an enemy
     /// </summary>
     /// <param name="_enemy">The enemy GameObject</param>
-    private void KillEnemy(GameObject _enemy)
+    public void KillEnemy(GameObject _enemy)
     {
         if (GetEnemyCount() == 0)
             return;
@@ -133,7 +133,7 @@ public class EnemyManager : MonoBehaviour
     /// <summary>
     /// Kills all enemies in our enemy list
     /// </summary>
-    private void KillAllEnemies()
+    public void KillAllEnemies()
     {
         if (GetEnemyCount() == 0)
             return;
@@ -165,7 +165,30 @@ public class EnemyManager : MonoBehaviour
     /// Gets the total number of our spawn points
     /// </summary>
     public int GetSpawnPointsCount() => spawnPoints.Length;
-    
+
+    #region Events
+    private void OnEnemyHit(GameObject _go)
+    {
+        
+    }
+
+    private void OnEnemyDie(GameObject _go)
+    {
+        KillEnemy(_go);
+    }
+
+    private void OnEnable()
+    {
+        GameEvents.OnEnemyHit += OnEnemyHit;
+        GameEvents.OnEnemyDie += OnEnemyDie;
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.OnEnemyHit -= OnEnemyHit;
+        GameEvents.OnEnemyDie -= OnEnemyDie;
+    }
+    #endregion
 
     #region Examples
     private void RandomFun()

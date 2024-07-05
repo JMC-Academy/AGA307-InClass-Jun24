@@ -4,6 +4,7 @@ public class Projectile : MonoBehaviour
 {
     public GameObject hitParticles;
     public float lifetime = 3f;
+    public int damage = 10;
     void Start()
     {
         Invoke("DestroyProjectile", lifetime);
@@ -18,15 +19,12 @@ public class Projectile : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        //print(collision.gameObject.name);
         if(collision.collider.CompareTag("Enemy"))
         {
-            //Change the collided objects material colour to red
-            collision.gameObject.GetComponentInChildren<Renderer>().material.color = Color.red;
-            //Destroy the collision object after 1 second
-            Destroy(collision.gameObject,1);
+            //If the hit enemy has the Enemy script, run the Hit function
+            if(collision.gameObject.GetComponent<Enemy>() != null)
+                collision.gameObject.GetComponent<Enemy>().Hit(damage);
         }
         DestroyProjectile();
     }
-
 }

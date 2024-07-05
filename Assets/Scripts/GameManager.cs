@@ -11,7 +11,7 @@ public enum Difficulty
 {
     Easy, Medium, Hard
 }
-public class GameManager : MonoBehaviour
+public class GameManager : Singleton<GameManager>
 {
     public GameState gameState;
     public Difficulty difficulty;
@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
     public int score;
     private int scoreMultiplier = 1;
 
-    void Start()
+    public void Start()
     {
         switch(difficulty)
         {
@@ -35,4 +35,33 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void AddScore(int _score)
+    {
+        score += _score * scoreMultiplier;
+        print("Score is: " + score);
+    }
+
+    #region Events
+    private void OnEnemyHit(GameObject _go)
+    {
+        AddScore(10);
+    }
+
+    private void OnEnemyDie(GameObject _go)
+    {
+        AddScore(100);
+    }
+
+    private void OnEnable()
+    {
+        GameEvents.OnEnemyHit += OnEnemyHit;
+        GameEvents.OnEnemyDie += OnEnemyDie;
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.OnEnemyHit -= OnEnemyHit;
+        GameEvents.OnEnemyDie -= OnEnemyDie;
+    }
+    #endregion
 }

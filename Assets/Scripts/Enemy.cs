@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class Enemy : MonoBehaviour
+public class Enemy : GameBehaviour
 {
     public EnemyType myType;
 
@@ -17,12 +17,9 @@ public class Enemy : MonoBehaviour
 
     private float mySpeed = 5f;
     private int myHealth = 100;
-    private EnemyManager _EM;
 
     public void Setup(Transform _startPos)
     {
-        _EM = FindFirstObjectByType<EnemyManager>();
-
         switch (myType)
         {
             case EnemyType.OneHanded:
@@ -77,6 +74,20 @@ public class Enemy : MonoBehaviour
         StartCoroutine(Move());
     }
 
+    public void Hit(int _damage)
+    {
+        myHealth -= _damage;
+        if (myHealth <= 0)
+            Die();
+        else
+            GameEvents.ReportOnEnemyHit(gameObject);
+    }
+
+    private void Die()
+    {
+        StopAllCoroutines();
+        GameEvents.ReportOnEnemyDie(gameObject);
+    }
 
     /*
     private IEnumerator Move()
