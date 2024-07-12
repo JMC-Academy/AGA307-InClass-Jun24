@@ -19,6 +19,7 @@ public class EnemyManager : Singleton<EnemyManager>
     public string killCondition = "archer";
     public float spawnDelay = 1f;
     public int spawnAmount = 6;
+    private Vector3 defaultScale = Vector3.one * 2.2f;
 
     private void Start()
     {
@@ -47,8 +48,10 @@ public class EnemyManager : Singleton<EnemyManager>
         int rndSpawn = Random.Range(0, spawnPoints.Length);
         GameObject enemy = Instantiate(enemyPrefabs[rndEnemy], spawnPoints[rndSpawn].position, spawnPoints[rndSpawn].rotation);
         enemy.GetComponent<Enemy>().Setup(spawnPoints[rndSpawn]);
+        enemy.transform.localScale = defaultScale;
         enemies.Add(enemy);
-        print("Enemy Count is: " + GetEnemyCount());
+        _UI.UpdateEnemyCount(enemies.Count);
+        //print("Enemy Count is: " + GetEnemyCount());
     }
 
     /// <summary>
@@ -97,7 +100,8 @@ public class EnemyManager : Singleton<EnemyManager>
 
         Destroy(_enemy);
         enemies.Remove(_enemy);
-        print("Enemy Count is: " + GetEnemyCount());
+        _UI.UpdateEnemyCount(enemies.Count);
+        //print("Enemy Count is: " + GetEnemyCount());
     }
 
     /// <summary>
@@ -165,6 +169,19 @@ public class EnemyManager : Singleton<EnemyManager>
     /// Gets the total number of our spawn points
     /// </summary>
     public int GetSpawnPointsCount() => spawnPoints.Length;
+
+    /// <summary>
+    /// Scales all enemies to a new size
+    /// </summary>
+    /// <param name="_scale">The size we want to change to</param>
+    public void ScaleEnemies(float _scale)
+    {
+        defaultScale = Vector3.one * _scale;
+        for(int i=0; i<enemies.Count; i++)
+        {
+            enemies[i].transform.localScale = defaultScale;
+        }
+    }
 
     #region Events
     private void OnEnemyHit(GameObject _go)

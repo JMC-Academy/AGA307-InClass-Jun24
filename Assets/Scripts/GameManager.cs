@@ -38,7 +38,7 @@ public class GameManager : Singleton<GameManager>
     public void AddScore(int _score)
     {
         score += _score * scoreMultiplier;
-        print("Score is: " + score);
+        _UI.UpdateScore(score);
     }
 
     #region Events
