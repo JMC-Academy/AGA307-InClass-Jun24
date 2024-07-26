@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public enum EnemyType 
@@ -93,12 +94,12 @@ public class EnemyManager : Singleton<EnemyManager>
     /// Kills an enemy
     /// </summary>
     /// <param name="_enemy">The enemy GameObject</param>
-    public void KillEnemy(GameObject _enemy)
+    public void KillEnemy(GameObject _enemy, float _delay = 0)
     {
         if (GetEnemyCount() == 0)
             return;
 
-        Destroy(_enemy);
+        Destroy(_enemy, _delay);
         enemies.Remove(_enemy);
         _UI.UpdateEnemyCount(enemies.Count);
         //print("Enemy Count is: " + GetEnemyCount());
@@ -191,7 +192,7 @@ public class EnemyManager : Singleton<EnemyManager>
 
     private void OnEnemyDie(GameObject _go)
     {
-        KillEnemy(_go);
+        KillEnemy(_go, 5);
     }
 
     private void OnEnable()

@@ -1053,6 +1053,8 @@ GameObject:
   - component: {fileID: 414932}
   - component: {fileID: 3374886}
   - component: {fileID: 2372788}
+  - component: {fileID: 5393663792216189760}
+  - component: {fileID: 7635401126968739973}
   m_Layer: 0
   m_Name: LongSword
   m_TagString: Untagged
@@ -1128,6 +1130,42 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &5393663792216189760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 141106}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b31275411cc1aec40abbfc6ee1e05f10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 20
+--- !u!136 &7635401126968739973
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 141106}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.07
+  m_Height: 1
+  m_Direction: 2
+  m_Center: {x: 0.00000010154616, y: 0.00000004945674, z: 0.23707041}
 --- !u!1 &145208
 GameObject:
   m_ObjectHideFlags: 0
@@ -2160,7 +2198,7 @@ Animator:
   m_GameObject: {fileID: 185486}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 20300ac630e0fcd4dbab63a9b39cdafa, type: 3}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: cbeba8cb058d60e44ac051b27337f669, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -2210,7 +2248,7 @@ MonoBehaviour:
   myType: 0
   moveDistance: 1000
   stopDistance: 1
-  myPatrol: 0
+  attackRange: 3
 --- !u!1 &185512
 GameObject:
   m_ObjectHideFlags: 0

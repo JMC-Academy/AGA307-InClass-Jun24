@@ -6,7 +6,7 @@ public class GameBehaviour : MonoBehaviour
     protected static GameManager _GM { get { return GameManager.instance; } }
     protected static EnemyManager _EM { get { return EnemyManager.instance; } }
     protected static UIManager _UI {  get { return UIManager.instance; } }
-
+    protected static PlayerController _PLAYER {  get { return PlayerController.instance; } }
 
     public Transform GetClosestObject(Transform _origin, List<GameObject> _objects)
     {

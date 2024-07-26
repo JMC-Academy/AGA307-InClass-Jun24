@@ -39145,6 +39145,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hitParticles: {fileID: 2573745096668285417, guid: 6566a3f2b54cd6f45bb4c157bf7d3858, type: 3}
   lifetime: 3
+  damage: 60
 --- !u!54 &4825257544039014424
 Rigidbody:
   m_ObjectHideFlags: 0

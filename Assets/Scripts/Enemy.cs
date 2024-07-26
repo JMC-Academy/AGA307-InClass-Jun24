@@ -7,6 +7,7 @@ public class Enemy : GameBehaviour
 
     public float moveDistance = 1000f;
     public float stopDistance = 0.3f;
+    public float attackRange = 3;
 
     private PatrolType myPatrol;    //What patrol type we are
     private Transform moveToPos;    //Needed for all patrol
@@ -17,6 +18,13 @@ public class Enemy : GameBehaviour
 
     private float mySpeed = 5f;
     private int myHealth = 100;
+
+    private Animator anim;
+
+    private void Awake()
+    {
+        anim = GetComponent<Animator>();
+    }
 
     public void Setup(Transform _startPos)
     {
@@ -66,10 +74,23 @@ public class Enemy : GameBehaviour
         transform.LookAt(moveToPos);
         while(Vector3.Distance(transform.position, moveToPos.position) > stopDistance)
         {
+            if(Vector3.Distance(transform.position, _PLAYER.transform.position) < attackRange)
+            {
+                StopAllCoroutines();
+                StartCoroutine(Attack());
+                break;
+            }
             transform.position = Vector3.MoveTowards(transform.position, moveToPos.position, Time.deltaTime * mySpeed);
             yield return null;
         }
 
+        yield return new WaitForSeconds(1);
+        StartCoroutine(Move());
+    }
+
+    private IEnumerator Attack()
+    {
+        PlayAnimation("Attack");
         yield return new WaitForSeconds(1);
         StartCoroutine(Move());
     }
@@ -80,13 +101,24 @@ public class Enemy : GameBehaviour
         if (myHealth <= 0)
             Die();
         else
+        {
+            PlayAnimation("Hit");
             GameEvents.ReportOnEnemyHit(gameObject);
+        }
     }
 
     private void Die()
     {
         StopAllCoroutines();
+        GetComponent<Collider>().enabled = false;
+        PlayAnimation("Die");
         GameEvents.ReportOnEnemyDie(gameObject);
+    }
+
+    private void PlayAnimation(string _animationName)
+    {
+        int rnd = Random.Range(1, 4);
+        anim.SetTrigger(_animationName + rnd);
     }
 
     /*

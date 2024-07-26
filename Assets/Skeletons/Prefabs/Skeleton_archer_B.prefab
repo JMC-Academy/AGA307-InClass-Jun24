@@ -244,7 +244,7 @@ Animator:
   m_GameObject: {fileID: 108450}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 20300ac630e0fcd4dbab63a9b39cdafa, type: 3}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: cbeba8cb058d60e44ac051b27337f669, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -294,7 +294,6 @@ MonoBehaviour:
   myType: 2
   moveDistance: 1000
   stopDistance: 1
-  myPatrol: 0
 --- !u!1 &110598
 GameObject:
   m_ObjectHideFlags: 0

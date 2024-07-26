@@ -1,8 +1,9 @@
 using UnityEngine;
 
-public class PlayerController : GameBehaviour
+public class PlayerController : Singleton<PlayerController>
 {
     private CharacterController characterController;
+    public int health = 100;
     public float speed = 10f;
     public float jumpHeight = 3f;
     public float gravity = -9.81f;
@@ -44,5 +45,10 @@ public class PlayerController : GameBehaviour
 
         //Print the name of the closest enemy
         print("Closest Enemy is " + GetClosestObject(transform, _EM.enemies));
+    }
+
+    public void Hit(int _damage)
+    {
+        health -= _damage;
     }
 }
