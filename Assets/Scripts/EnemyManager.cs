@@ -9,7 +9,7 @@ public enum EnemyType
     TwoHanded, 
     Archer
 }
-public enum PatrolType { Linear, Random, Loop }
+public enum PatrolType { Linear, Random, Loop, Patrol, Detect, Chase, Attack, Die }
 
 public class EnemyManager : Singleton<EnemyManager>
 {

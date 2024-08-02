@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.AI;
 
 public class Enemy : GameBehaviour
 {
@@ -7,9 +8,13 @@ public class Enemy : GameBehaviour
 
     public float moveDistance = 1000f;
     public float stopDistance = 0.3f;
-    public float attackRange = 3;
+    public float attackRange = 3f;
+    public float detectDistance = 10f;
+    public float chaseDistance = 6f;
+    public float detectTime = 5f;
+    private float currentDetectTime;
 
-    private PatrolType myPatrol;    //What patrol type we are
+    public PatrolType myPatrol;     //What patrol type we are
     private Transform moveToPos;    //Needed for all patrol
     private Transform startPos;     //Needed for Loop patrol movement
     private Transform endPos;       //Needed for Loop patrol movement
@@ -20,10 +25,72 @@ public class Enemy : GameBehaviour
     private int myHealth = 100;
 
     private Animator anim;
+    private NavMeshAgent agent;
+
+    private void ChangeSpeed(float _speed) => agent.speed = _speed;
 
     private void Awake()
     {
         anim = GetComponent<Animator>();
+        agent = GetComponent<NavMeshAgent>();
+    }
+
+    private void Update()
+    {
+        if (myPatrol == PatrolType.Die)
+            return;
+
+        //Get the distance between us and the player
+        float distToPlayer = Vector3.Distance(transform.position, _PLAYER.transform.position);
+        if(distToPlayer < detectDistance && myPatrol != PatrolType.Attack) 
+        {
+            if(myPatrol != PatrolType.Chase)
+                myPatrol = PatrolType.Detect;
+        }
+
+        //Set the animators speed parameter to mySpeed
+        anim.SetFloat("Speed", agent.speed);
+
+        switch(myPatrol)
+        {
+            case PatrolType.Patrol:
+                //Get the distance between us and the destination
+                float distToDestination = Vector3.Distance(transform.position, endPos.position);
+                //If the distance is close enough, run the AI setup again
+                if (distToDestination < 1)
+                    SetupAI();
+                break;
+
+            case PatrolType.Detect:
+                //Set the destination to ourselves, essentially stopping us
+                agent.SetDestination(transform.position);
+                ChangeSpeed(0);
+                //Decrement our detect timer
+                currentDetectTime -= Time.deltaTime;
+                if(distToPlayer <= detectDistance)
+                {
+                    myPatrol = PatrolType.Chase;
+                    currentDetectTime = detectTime;
+                }
+                if(currentDetectTime <= 0)
+                {
+                    SetupAI();
+                }
+                break;
+
+            case PatrolType.Chase:
+                //Set the destination to that of the player
+                agent.SetDestination(_PLAYER.transform.position);
+                //Increase the speed of the agent
+                ChangeSpeed(mySpeed * 1.5f);
+                //If the player gets outside of the detect distance, then return to detect state
+                if (distToPlayer > detectDistance)
+                    myPatrol = PatrolType.Detect;
+                //If we are close to the player, then attack
+                if (distToPlayer < attackRange)
+                    StartCoroutine(Attack());
+                break;
+        }
     }
 
     public void Setup(Transform _startPos)
@@ -31,27 +98,34 @@ public class Enemy : GameBehaviour
         switch (myType)
         {
             case EnemyType.OneHanded:
-                mySpeed = 5f;
+                mySpeed = 2f;
                 myHealth = 100;
-                myPatrol = PatrolType.Random;
+                myPatrol = PatrolType.Patrol;
                 break;
             case EnemyType.TwoHanded:
-                mySpeed = 3f;
+                mySpeed = 1f;
                 myHealth = 200;
-                myPatrol = PatrolType.Loop;
+                myPatrol = PatrolType.Patrol;
                 break;
             case EnemyType.Archer:
-                mySpeed = 7f;
+                mySpeed = 3f;
                 myHealth = 75;
-                myPatrol = PatrolType.Linear;
+                myPatrol = PatrolType.Patrol;
                 break;
         }
+        SetupAI();
+    }
 
-        startPos = _startPos;
+    private void SetupAI()
+    {
+        myPatrol = PatrolType.Patrol;
+        currentDetectTime = detectTime;
+        //startPos = _startPos;
         endPos = _EM.GetRandomSpawnPoint();
         moveToPos = endPos;
 
-        StartCoroutine(Move());
+        ChangeSpeed(mySpeed);
+        agent.SetDestination(endPos.position);
     }
 
     private IEnumerator Move()
@@ -90,9 +164,11 @@ public class Enemy : GameBehaviour
 
     private IEnumerator Attack()
     {
+        myPatrol = PatrolType.Attack;
+        ChangeSpeed(0);
         PlayAnimation("Attack");
         yield return new WaitForSeconds(1);
-        StartCoroutine(Move());
+        myPatrol = PatrolType.Chase;
     }
 
     public void Hit(int _damage)
@@ -109,6 +185,8 @@ public class Enemy : GameBehaviour
 
     private void Die()
     {
+        myPatrol = PatrolType.Die;
+        ChangeSpeed(0);
         StopAllCoroutines();
         GetComponent<Collider>().enabled = false;
         PlayAnimation("Die");

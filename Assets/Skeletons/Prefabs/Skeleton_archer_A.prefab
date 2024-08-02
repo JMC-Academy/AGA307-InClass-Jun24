@@ -494,6 +494,7 @@ GameObject:
   - component: {fileID: 9595696}
   - component: {fileID: -3657178095208242863}
   - component: {fileID: 4717267865661192163}
+  - component: {fileID: 7789478793554999846}
   m_Layer: 0
   m_Name: Skeleton_archer_A
   m_TagString: Enemy
@@ -578,6 +579,29 @@ MonoBehaviour:
   myType: 2
   moveDistance: 1000
   stopDistance: 1
+  attackRange: 3
+--- !u!195 &7789478793554999846
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 133616}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 1
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &134496
 GameObject:
   m_ObjectHideFlags: 0

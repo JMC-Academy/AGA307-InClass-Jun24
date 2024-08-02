@@ -8,7 +8,7 @@ public class Doors : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player")
+        if (other.tag == "Player" || other.tag == "Enemy")
         {
             anim.SetTrigger("DoorOpen");
         }
@@ -16,7 +16,7 @@ public class Doors : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.tag == "Player")
+        if (other.tag == "Player" || other.CompareTag("Enemy"))
         {
             anim.SetTrigger("DoorClose");
         }

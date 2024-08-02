@@ -44,7 +44,7 @@ public class PlayerController : Singleton<PlayerController>
         characterController.Move(velocity * Time.deltaTime);
 
         //Print the name of the closest enemy
-        print("Closest Enemy is " + GetClosestObject(transform, _EM.enemies));
+        //print("Closest Enemy is " + GetClosestObject(transform, _EM.enemies));
     }
 
     public void Hit(int _damage)
