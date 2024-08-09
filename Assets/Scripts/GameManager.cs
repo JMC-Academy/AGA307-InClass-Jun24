@@ -15,6 +15,7 @@ public class GameManager : Singleton<GameManager>
 {
     public GameState gameState;
     public Difficulty difficulty;
+    public PauseController pauseController;
 
     public int score;
     private int scoreMultiplier = 1;

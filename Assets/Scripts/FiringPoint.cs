@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class FiringPoint : MonoBehaviour
+public class FiringPoint : GameBehaviour
 {
     public GameObject projectilePrefab;
     public float projectileSpeed = 1000f;
@@ -11,6 +11,9 @@ public class FiringPoint : MonoBehaviour
 
     void Update()
     {
+        if (isPaused)
+            return;
+
         if(Input.GetButtonDown("Fire1"))
             FireProjectile();
 
@@ -38,6 +41,7 @@ public class FiringPoint : MonoBehaviour
 
         if(Physics.Raycast(ray, out hit, Mathf.Infinity))
         {
+            _AUDIO.PlayLazerSound(GetComponent<AudioSource>());
             //Debug.Log("Hit " + hit.collider.name + " at point " + hit.point + "which was " + hit.distance + "units away");
             laser.SetPosition(0, transform.position);
             laser.SetPosition(1, hit.point);

@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.AI;
+using TMPro.EditorUtilities;
 
 public class Enemy : GameBehaviour
 {
@@ -26,6 +27,7 @@ public class Enemy : GameBehaviour
 
     private Animator anim;
     private NavMeshAgent agent;
+    private AudioSource audioSource;
 
     private void ChangeSpeed(float _speed) => agent.speed = _speed;
 
@@ -33,6 +35,7 @@ public class Enemy : GameBehaviour
     {
         anim = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -167,6 +170,7 @@ public class Enemy : GameBehaviour
         myPatrol = PatrolType.Attack;
         ChangeSpeed(0);
         PlayAnimation("Attack");
+        _AUDIO.PlayAttackSound(audioSource);
         yield return new WaitForSeconds(1);
         myPatrol = PatrolType.Chase;
     }
@@ -179,6 +183,7 @@ public class Enemy : GameBehaviour
         else
         {
             PlayAnimation("Hit");
+            _AUDIO.PlayHitSound(audioSource);
             GameEvents.ReportOnEnemyHit(gameObject);
         }
     }
@@ -190,6 +195,7 @@ public class Enemy : GameBehaviour
         StopAllCoroutines();
         GetComponent<Collider>().enabled = false;
         PlayAnimation("Die");
+        _AUDIO.PlayDieSound(audioSource);
         GameEvents.ReportOnEnemyDie(gameObject);
     }
 
@@ -197,6 +203,11 @@ public class Enemy : GameBehaviour
     {
         int rnd = Random.Range(1, 4);
         anim.SetTrigger(_animationName + rnd);
+    }
+
+    public void PlayFootstep()
+    {
+        _AUDIO.PlayEnemyFootsteps(audioSource);
     }
 
     /*

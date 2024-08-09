@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Projectile : MonoBehaviour
+public class Projectile : GameBehaviour
 {
     public GameObject hitParticles;
     public float lifetime = 3f;
@@ -8,6 +8,7 @@ public class Projectile : MonoBehaviour
     void Start()
     {
         Invoke("DestroyProjectile", lifetime);
+        //_AUDIO.PlayFireballSound(GetComponent<AudioSource>());
     }
 
     public void DestroyProjectile()

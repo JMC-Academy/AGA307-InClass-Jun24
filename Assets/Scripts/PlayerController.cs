@@ -15,9 +15,15 @@ public class PlayerController : Singleton<PlayerController>
     private Vector3 velocity;
     private bool isGrounded;
 
+    [Header("Audio")]
+    public float stepRate = 0.5f;
+    private float stepCooldown;
+    private AudioSource audioSource;
+
     void Start()
     {
         characterController = GetComponent<CharacterController>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -43,12 +49,18 @@ public class PlayerController : Singleton<PlayerController>
         velocity.y += gravity * Time.deltaTime;
         characterController.Move(velocity * Time.deltaTime);
 
-        //Print the name of the closest enemy
-        //print("Closest Enemy is " + GetClosestObject(transform, _EM.enemies));
+        //Audio stuff
+        stepCooldown -= Time.deltaTime;
+        if(stepCooldown < 0 && isGrounded && (move.x != 0 || move.z != 0))
+        {
+            stepCooldown = stepRate;
+            _AUDIO.PlayPlayerFootsteps(audioSource);
+        }
     }
 
     public void Hit(int _damage)
     {
         health -= _damage;
+        _AUDIO.PlayHitSound(audioSource);
     }
 }

@@ -4,6 +4,7 @@ public class PauseController : MonoBehaviour
 {
     public GameObject pausePanel;
     private bool paused;
+    public bool Pause => paused;
 
     void Start()
     {

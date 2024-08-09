@@ -7,6 +7,9 @@ public class GameBehaviour : MonoBehaviour
     protected static EnemyManager _EM { get { return EnemyManager.instance; } }
     protected static UIManager _UI {  get { return UIManager.instance; } }
     protected static PlayerController _PLAYER {  get { return PlayerController.instance; } }
+    protected static AudioManager _AUDIO { get { return AudioManager.instance; } }
+
+    public bool isPaused => _GM.pauseController.Pause;
 
     public Transform GetClosestObject(Transform _origin, List<GameObject> _objects)
     {
