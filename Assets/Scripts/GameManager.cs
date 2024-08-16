@@ -40,6 +40,7 @@ public class GameManager : Singleton<GameManager>
     {
         score += _score * scoreMultiplier;
         _UI.UpdateScore(score);
+        _SAVE.SetScore(score);
     }
 
     #region Events
